@@ -1,0 +1,6 @@
+# These are example values for environment variables used in the project.
+# Please copy this file to ".env" and edit the values to match your Nexus instance.
+BASE_PATH=/registration
+BASE_URI=https://bbp-nexus.epfl.ch/v0
+SCIGRAPH_URI=https://bbp-nexus.epfl.ch/scigraph
+DOMAIN=bbp

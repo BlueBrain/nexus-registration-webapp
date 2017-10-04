@@ -1,0 +1,32 @@
+FROM nginx:mainline
+
+# Put our build artifact and custom conf in the right places
+RUN chgrp -R 0 /var/cache/nginx && chmod g+wx /var/cache/nginx
+RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
+RUN touch /var/run/nginx.pid && chgrp 0 /var/run/nginx.pid && chmod g+rwx /var/run/nginx.pid
+
+# Prepare nginx configuration for environment substitution at runtime
+WORKDIR /etc/nginx
+COPY docker/nginx.conf ./
+RUN chgrp 0 nginx.conf && chmod g+w nginx.conf
+RUN cp -a nginx.conf nginx.conf.template
+
+# Put app files in the right place
+WORKDIR /usr/share/nginx/html
+COPY dist .
+RUN chgrp 0 index.js edit.js edit.html && chmod g+w index.js edit.js edit.html
+RUN cp -a index.js index.js.template
+RUN cp -a edit.js edit.js.template
+RUN cp -a edit.html edit.html.template
+
+# Default values for environment variables, can be overriden at runtime
+ENV BASE_PATH="${BASE_PATH}" BASE_URI="${BASE_URI}" SCIGRAPH_URI="${SCIGRAPH_URI}" DOMAIN="${DOMAIN}"
+
+# Use /bin/bash, not /bin/sh (dash), to fix npm scripts and local `docker run` SIGINT handling.
+CMD ["/bin/bash","-c","envsubst '$BASE_PATH' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf \
+    && envsubst '$BASE_URI $SCIGRAPH_URI $DOMAIN' < index.js.template > index.js \
+    && envsubst '$BASE_URI $SCIGRAPH_URI $DOMAIN' < edit.js.template > edit.js \
+    && envsubst '$BASE_PATH' < edit.html.template > edit.html \
+    && nginx -g 'daemon off;'"]
+
+EXPOSE 8000

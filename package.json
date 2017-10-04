@@ -1,0 +1,35 @@
+{
+  "name": "nexus-registration-webapp",
+  "version": "0.1.12",
+  "description": "Domain-agnostic data edition and registration web application for the Blue Brain Nexus platform",
+  "devDependencies": {
+    "@bbp/nexus-shacl-helpers": "^0.1.1",
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.0.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-env": "^1.5.2",
+    "copy-webpack-plugin": "^4.0.1",
+    "envsub": "^3.1.0",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.6.1"
+  },
+  "engines": {
+    "node": ">=8.0.0",
+    "npm": ">=5.0.0"
+  },
+  "scripts": {
+    "prebuild": "npm run envsubst -- docker/Dockerfile.template docker/Dockerfile",
+    "build": "webpack --config webpack.config.js",
+    "prestart": "npm run build",
+    "start": "npm run envsubst -- dist/config.js && npm run envsubst -- dist/index.js && npm run envsubst -- dist/edit.js && npm run envsubst -- dist/edit.html",
+    "test": "true",
+    "prebuild-docker": "npm run prebuild",
+    "build-docker": "docker build -f docker/Dockerfile -t ${npm_package_name}:${npm_package_version} .",
+    "prestart-docker": "echo \"\n`tput setaf 3`Starting, will be available on:\n`tput setaf 2`http://localhost:8000\n`tput sgr0`\"",
+    "start-docker": "docker run --rm -p 8000:8000 ${npm_package_name}:${npm_package_version}",
+    "env-file-path": "if [ -r '.env' ]; then echo '.env'; else echo 'env_default'; fi",
+    "envsubst": "envsub --env-file=$(npm run env-file-path --silent)"
+  },
+  "author": "Blue Brain Nexus",
+  "license": "Apache-2.0"
+}

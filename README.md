@@ -3,8 +3,8 @@
 Domain-agnostic data edition and registration web application for the [Blue Brain Nexus platform](https://github.com/BlueBrain/nexus).
 
 ## Prerequisites for development
-Node.js 6.9.3 or later
-npm 3.10.10 or later
+Node.js 8 or later
+npm 5 or later
 (Optional) Docker if you want to generate Docker images
 
 ## How to use

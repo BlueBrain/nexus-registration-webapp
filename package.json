@@ -1,6 +1,6 @@
 {
   "name": "nexus-registration-webapp",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "Domain-agnostic data edition and registration web application for the Blue Brain Nexus platform",
   "devDependencies": {
     "@bbp/nexus-shacl-helpers": "^0.1.1",

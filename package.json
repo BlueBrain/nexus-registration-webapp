@@ -1,7 +1,15 @@
 {
   "name": "nexus-registration-webapp",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Domain-agnostic data edition and registration web application for the Blue Brain Nexus platform",
+  "homepage": "https://github.com/BlueBrain/nexus",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BlueBrain/nexus-registration-webapp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bluebrain/nexus-registration-webapp/issues"
+  },
   "devDependencies": {
     "@bbp/nexus-shacl-helpers": "^0.1.1",
     "babel-core": "^6.25.0",
